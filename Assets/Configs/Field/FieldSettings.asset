@@ -15,6 +15,3 @@ MonoBehaviour:
   Width: 10
   Height: 22
   StartHeight: 2
-  SpawnPosition:
-    Column: 0
-    Row: 5

@@ -1,6 +1,9 @@
 using System;
 public interface IInput
 {
-    public event Action<float> OnMove;
-    public event Action<float> OnFall;
+    public event Action<int> OnMoveButtonDown;
+    public event Action OnMoveButtonUp;
+    public event Action OnFallButtonDown;
+    public event Action OnFallButtonUp;
+    public event Action OnRotateButtonDown;
 }

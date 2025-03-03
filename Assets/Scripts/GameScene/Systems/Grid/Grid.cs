@@ -1,11 +1,6 @@
 using UnityEngine;
 public class Grid
 {
-    GridView _gridView;
-    public Grid(GridView gridView)
-    {
-        _gridView = gridView;
-    }
     public Vector2[,] GenerateGrid(int height, int width, int startHeight, Vector2 centerPosition, float cellSize)
     {
         float startOffset = cellSize / 2f;
@@ -20,7 +15,6 @@ public class Grid
                 grid[i,j] = new Vector2(startX + (cellSize * j), startY - (cellSize * i));
             }
         }
-        _gridView.CreateGrid(grid, height, width, startHeight, cellSize);
         return grid;
     }
 }

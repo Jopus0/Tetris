@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CenterPositionPercentage: {x: 0.5, y: 0.5}
   CellSizePercentage: 0.04
+  BlockSizeScale: 1.05

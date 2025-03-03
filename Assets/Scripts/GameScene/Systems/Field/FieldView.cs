@@ -1,26 +1,31 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Zenject;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
-using static UnityEngine.Rendering.DebugUI;
-public class FieldView
+public class FieldView : MonoBehaviour
 {
+    [SerializeField] private Transform _blockParent;
+    [SerializeField] private Transform _cellParent;
+
     private FieldViewSettings _fieldViewSettings;
     private Camera _mainCamera;
     private Grid _grid;
     private BlockFactory _blockFactory;
+    private CellFactory _cellFactory;
 
     private Vector2[,] _gridPoints;
     private float _cellSize;
 
     private Block[] _currentFigure;
     private Dictionary<MatrixPosition, Block> _field;
-    public FieldView(FieldViewSettings fieldViewSettings, Camera mainCamera, Grid grid, BlockFactory blockFactory)
+
+    [Inject]
+    private void Construct(FieldViewSettings fieldViewSettings, Camera mainCamera, Grid grid, BlockFactory blockFactory, CellFactory cellFactory)
     {
         _fieldViewSettings = fieldViewSettings;
         _mainCamera = mainCamera;
         _grid = grid;
         _blockFactory = blockFactory;
+        _cellFactory = cellFactory;
     }
     public void GenerateGrid(int height, int width, int startHeight)
     {
@@ -37,25 +42,10 @@ public class FieldView
         _cellSize = cellOffsetPosition.x - cellStartPosition.x;
 
         _gridPoints = _grid.GenerateGrid(height, width, startHeight, centerPosition, _cellSize);
+        CreateGrid(_gridPoints, height, width, startHeight, _cellSize);
     }
-    public void MoveBlocks(MatrixPosition[] prevPositions, MatrixPosition[] newPositions)
+    public void CreateFigure(FigureSettings figureSettings, MatrixPosition[] figure)
     {
-        int count = prevPositions.Length;
-        Block[] blocks = new Block[count];
-        for (int i = 0; i < count; i++)
-        {
-            _field.TryGetValue(prevPositions[i], out blocks[i]);
-            ClearBlock(prevPositions[i]);
-        }
-        for (int i = 0; i < count; i++)
-        {
-            AddBlock(newPositions[i], blocks[i]);
-            blocks[i].transform.position = _gridPoints[newPositions[i].Column, newPositions[i].Row];
-        }
-    }
-    public void CreateFigure(FigureSettings figureSettings, MatrixPosition spawnPosition)
-    {
-        var figure = figureSettings.GetFigureCopy();
         int blockCount = figure.Length;
         Color blockColor = figureSettings.Color;
 
@@ -65,20 +55,54 @@ public class FieldView
             _currentFigure[i] = _blockFactory.Create();
             _currentFigure[i].SpriteRenderer.color = blockColor;
 
-            int column = spawnPosition.Column + figure[i].Column;
-            int row = spawnPosition.Row + figure[i].Row;
+            int column = figure[i].Column;
+            int row = figure[i].Row;
+            _currentFigure[i].transform.parent = _blockParent;
             _currentFigure[i].transform.position = _gridPoints[column, row];
-            _currentFigure[i].transform.localScale = new Vector2(_cellSize, _cellSize);
+            float blocksize = _cellSize * _fieldViewSettings.BlockSizeScale;
+            _currentFigure[i].transform.localScale = new Vector2(blocksize, blocksize);
 
-            AddBlock(new MatrixPosition(column, row), _currentFigure[i]);
+            _field.Add(new MatrixPosition(column, row), _currentFigure[i]);
         }
     }
-    private void AddBlock(MatrixPosition position, Block block)
+    public void MoveBlocks(List<MatrixPosition> prevPositions, List<MatrixPosition> newPositions)
     {
-        _field.Add(position, block);
+        int count = prevPositions.Count;
+        Block[] blocks = new Block[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            _field.TryGetValue(prevPositions[i], out blocks[i]);
+            _field.Remove(prevPositions[i]);
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            _field.Add(newPositions[i], blocks[i]);
+            blocks[i].transform.position = _gridPoints[newPositions[i].Column, newPositions[i].Row];
+        }
     }
-    private void ClearBlock(MatrixPosition position)
+    public void DestroyBlocks(List<MatrixPosition> positions)
     {
-        _field.Remove(position);
+        Block block;
+        foreach(var position in positions)
+        {
+            _field.TryGetValue(position, out block);
+            _field.Remove(position);
+            Destroy(block.gameObject);
+        }
+    }
+    private void CreateGrid(Vector2[,] grid, int height, int width, int startHeight, float cellSize)
+    {
+        for (int i = startHeight; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                var cell = _cellFactory.Create();
+                cell.transform.parent = _cellParent;
+                cell.transform.position = new Vector3(grid[i, j].x, grid[i, j].y, 1f);
+                cell.transform.localScale = new Vector2(cellSize, cellSize);
+            }
+        }
     }
 }

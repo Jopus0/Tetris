@@ -2,14 +2,14 @@ using UnityEngine;
 using Zenject;
 public class FigureGenerator
 {
-    private FigureSettings[] _figureSettings;
-    public FigureGenerator(FigureSettings[] figureSettings)
+    private FigureGeneratorSettings _settings;
+    public FigureGenerator(FigureGeneratorSettings settings)
     {
-        _figureSettings = figureSettings;
+        _settings = settings;
     }
     public FigureSettings GetRandomFigure()
     {
-        int randomNumber = Random.Range(0, _figureSettings.Length);
-        return _figureSettings[randomNumber];
+        int randomNumber = Random.Range(0, _settings.FiguresSettings.Length);
+        return _settings.FiguresSettings[randomNumber];
     }
 }

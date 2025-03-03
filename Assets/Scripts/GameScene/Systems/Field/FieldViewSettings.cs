@@ -5,4 +5,5 @@ public class FieldViewSettings : ScriptableObject
 {
     public Vector2 CenterPositionPercentage;
     public float CellSizePercentage;
+    public float BlockSizeScale;
 }

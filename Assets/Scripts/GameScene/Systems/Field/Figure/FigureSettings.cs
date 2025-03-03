@@ -5,7 +5,6 @@ public class FigureSettings : ScriptableObject
 {
     public MatrixPosition[] Figure;
     public Color Color;
-
     public MatrixPosition[] GetFigureCopy()
     {
         return (MatrixPosition[])Figure.Clone();
