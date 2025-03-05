@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FigureMoverSettings
   m_EditorClassIdentifier: 
   SpawnPosition:
-    Column: 0
-    Row: 5
+    Row: 0
+    Column: 5
   BaseFallTime: 0.8
   MinFallTime: 0.033
   FallScale: 5

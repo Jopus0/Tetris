@@ -7,6 +7,7 @@ public class GameConfigInstaller : MonoInstaller
     [SerializeField] private FigureGeneratorSettings _figureGeneratorSettings;
     [SerializeField] private FigureMoverSettngs _figureMoverSettngs;
     [SerializeField] private ScoreHandlerSettings _scoreHandlerSettings;
+    [SerializeField] private LevelHandlerSettings _levelHandlerSettings;
     public override void InstallBindings()
     {
         BindConfigs();
@@ -18,5 +19,6 @@ public class GameConfigInstaller : MonoInstaller
         Container.Bind<FigureGeneratorSettings>().FromInstance(_figureGeneratorSettings);
         Container.Bind<FigureMoverSettngs>().FromInstance(_figureMoverSettngs);
         Container.Bind<ScoreHandlerSettings>().FromInstance(_scoreHandlerSettings);
+        Container.Bind<LevelHandlerSettings>().FromInstance(_levelHandlerSettings);
     }
 }

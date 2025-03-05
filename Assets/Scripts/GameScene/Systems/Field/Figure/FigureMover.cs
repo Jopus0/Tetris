@@ -88,6 +88,7 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
     public void SetBaseFallTime(float time)
     {
         _baseFallTime = time;
+        _fallTime = Mathf.Min(_baseFallTime, _fallTime);
     }
     public void CreateFigure()
     {
@@ -97,8 +98,8 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
         int count = _currentFigure.Length;
         for (int i = 0; i < count; i++)
         {
-            _currentFigure[i].Column += _settngs.SpawnPosition.Column;
             _currentFigure[i].Row += _settngs.SpawnPosition.Row;
+            _currentFigure[i].Column += _settngs.SpawnPosition.Column;
         }
         _field.OnFigureCreate(figureSettings, _currentFigure);
     }
@@ -158,7 +159,7 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
             totalColumn += block.Column;
         }
 
-        int cellSize = Mathf.Max(right - left, lower - upper);
+        int cellSize = Mathf.Max(lower - upper, right - left);
 
         int leftColumn = Mathf.RoundToInt((totalColumn / count) - (cellSize / 2f));
         int upperRow = Mathf.RoundToInt((totalRow / count) - (cellSize / 2f));
@@ -169,8 +170,8 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
         for (int i = 0; i < count; i++)
         {
             prevPositions.Add(_currentFigure[i]);
-            newFigure[i].Column = leftColumn + (_currentFigure[i].Row - upperRow);
-            newFigure[i].Row = upperRow + Mathf.Abs((_currentFigure[i].Column - leftColumn) - cellSize);
+            newFigure[i].Column = leftColumn + Mathf.Abs((_currentFigure[i].Row - upperRow) - cellSize);
+            newFigure[i].Row = upperRow + (_currentFigure[i].Column - leftColumn);
             newPositions.Add(newFigure[i]);
 
             if (!_field.IsPositionValid(newPositions[i]))
@@ -220,7 +221,7 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
             _horizontalMoveTimer += Time.deltaTime;
         }
     }
-    private void Move(MatrixPosition[] figure, int deltaColumns, int deltaRows)
+    private void Move(MatrixPosition[] figure, int deltaRows, int deltaColumns)
     {
         int count = figure.Length;
         List<MatrixPosition> prevPositions = new List<MatrixPosition>();
@@ -229,8 +230,8 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
         for (int i = 0; i < count; i++)
         {
             prevPositions.Add(figure[i]);
-            newFigure[i].Column = figure[i].Column + deltaColumns;
             newFigure[i].Row = figure[i].Row + deltaRows;
+            newFigure[i].Column = figure[i].Column + deltaColumns;
             newPositions.Add(newFigure[i]);
 
             if (!_field.IsPositionValid(newPositions[i]))
@@ -242,11 +243,10 @@ public class FigureMover : IInitializable, IDisposable ,ITickable
     private bool IsLanded()
     {
         int count = _currentFigure.Length;
-
         foreach (var block in _currentFigure)
         {
-            int lowerColumn = block.Column + 1;
-            if (lowerColumn == _fieldSize.Column || !_field.IsPositionEmpty(new MatrixPosition(lowerColumn, block.Row)))
+            int lowerRow = block.Row + 1;
+            if (lowerRow == _fieldSize.Row || !_field.IsPositionEmpty(new MatrixPosition(lowerRow, block.Column)))
             {
                 return true;
             }

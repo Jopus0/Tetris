@@ -38,17 +38,17 @@ public class Field : IInitializable, ITickable
     public void OnFigureLanded(MatrixPosition[] figure)
     {
         foreach(var block in figure)
-            _field[block.Column, block.Row] = true;
+            _field[block.Row, block.Column] = true;
     }
     public bool IsPositionValid(MatrixPosition position)
     {
-        bool columnValid = position.Column >= 0 && position.Column < _fieldSettings.Height;
-        bool rowValid = position.Row >= 0 && position.Row < _fieldSettings.Width;
+        bool rowValid = position.Row >= 0 && position.Row < _fieldSettings.Height;
+        bool columnValid = position.Column >= 0 && position.Column < _fieldSettings.Width;
         return columnValid && rowValid && IsPositionEmpty(position);
     }
     public bool IsPositionEmpty(MatrixPosition position)
     {
-        return !_field[position.Column, position.Row];
+        return !_field[position.Row, position.Column];
     }
     private void ClearLines()
     {
@@ -103,11 +103,11 @@ public class Field : IInitializable, ITickable
         }
         _fieldView.MoveBlocks(prevPositions, newPositions);
     }
-    private bool IsRowFull(int column)
+    private bool IsRowFull(int row)
     {
         for(int i = 0; i < _fieldSettings.Width; i++)
         {
-            if (!_field[column, i])
+            if (!_field[row, i])
             {
                 return false;
             }

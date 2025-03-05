@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FieldSettings
   m_EditorClassIdentifier: 
   Width: 10
-  Height: 22
-  StartHeight: 2
+  Height: 23
+  StartHeight: 3

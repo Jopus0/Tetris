@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: LFigure
   m_EditorClassIdentifier: 
   Figure:
-  - Column: 0
-    Row: 1
-  - Column: 1
-    Row: -1
-  - Column: 1
-    Row: 0
-  - Column: 1
-    Row: 1
+  - Row: 0
+    Column: 1
+  - Row: 1
+    Column: -1
+  - Row: 1
+    Column: 0
+  - Row: 1
+    Column: 1
   Color: {r: 1, g: 0.74702513, b: 0, a: 1}

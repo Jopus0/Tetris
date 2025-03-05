@@ -6,6 +6,7 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private FieldView _fieldView;
     [SerializeField] private ScoreView _scoreView;
+    [SerializeField] private LevelView _levelView;
 
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private Block _blockPrefab;
@@ -14,6 +15,7 @@ public class GameSceneInstaller : MonoInstaller
         BindCommonServices();
         BindField();
         BindScore();
+        BindLevel();
     }
     private void BindCommonServices()
     {
@@ -38,5 +40,11 @@ public class GameSceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Score>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<ScoreView>().FromInstance(_scoreView);
         Container.BindInterfacesAndSelfTo<ScoreHandler>().FromNew().AsSingle().NonLazy();
+    }
+    private void BindLevel()
+    {
+        Container.BindInterfacesAndSelfTo<Level>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<LevelView>().FromInstance(_levelView);
+        Container.BindInterfacesAndSelfTo<LevelHandler>().FromNew().AsSingle().NonLazy();
     }
 }

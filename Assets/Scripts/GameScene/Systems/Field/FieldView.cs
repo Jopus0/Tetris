@@ -55,14 +55,14 @@ public class FieldView : MonoBehaviour
             _currentFigure[i] = _blockFactory.Create();
             _currentFigure[i].SpriteRenderer.color = blockColor;
 
-            int column = figure[i].Column;
             int row = figure[i].Row;
+            int column = figure[i].Column;
             _currentFigure[i].transform.parent = _blockParent;
-            _currentFigure[i].transform.position = _gridPoints[column, row];
+            _currentFigure[i].transform.position = _gridPoints[row, column];
             float blocksize = _cellSize * _fieldViewSettings.BlockSizeScale;
             _currentFigure[i].transform.localScale = new Vector2(blocksize, blocksize);
 
-            _field.Add(new MatrixPosition(column, row), _currentFigure[i]);
+            _field.Add(new MatrixPosition(row, column), _currentFigure[i]);
         }
     }
     public void MoveBlocks(List<MatrixPosition> prevPositions, List<MatrixPosition> newPositions)
@@ -79,7 +79,7 @@ public class FieldView : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             _field.Add(newPositions[i], blocks[i]);
-            blocks[i].transform.position = _gridPoints[newPositions[i].Column, newPositions[i].Row];
+            blocks[i].transform.position = _gridPoints[newPositions[i].Row, newPositions[i].Column];
         }
     }
     public void DestroyBlocks(List<MatrixPosition> positions)

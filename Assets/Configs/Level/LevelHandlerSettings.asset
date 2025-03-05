@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b6162f128bb6e489e9fc9cb9a0a173, type: 3}
+  m_Name: LevelHandlerSettings
+  m_EditorClassIdentifier: 
+  LinesForLevel: 10
+  LevelComplications:
+  - Level: 1
+    FallTime: 0.71667
+  - Level: 2
+    FallTime: 0.63333
+  - Level: 3
+    FallTime: 0.55
+  - Level: 4
+    FallTime: 0.46667
+  - Level: 5
+    FallTime: 0.38333
+  - Level: 6
+    FallTime: 0.3
+  - Level: 7
+    FallTime: 0.21667
+  - Level: 8
+    FallTime: 0.13333
+  - Level: 9
+    FallTime: 0.1
+  - Level: 10
+    FallTime: 0.08333
+  - Level: 11
+    FallTime: 0.08333
+  - Level: 12
+    FallTime: 0.08333
+  - Level: 13
+    FallTime: 0.06667
+  - Level: 14
+    FallTime: 0.06667
+  - Level: 15
+    FallTime: 0.06667
+  - Level: 16
+    FallTime: 0.05
+  - Level: 17
+    FallTime: 0.05
+  - Level: 18
+    FallTime: 0.05
+  - Level: 19
+    FallTime: 0.03333
